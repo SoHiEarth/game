@@ -2,36 +2,30 @@
 #include <GLFW/glfw3.h>
 #include "core/core.h"
 #include "core/render/render.h"
+#include "core/input/input.h"
 #include "core/load.h"
 #include <fmt/core.h>
 
 int main() {
   r::Init();
   Core::world = LoadWorld("testing/test.xml");
-
-  Core::world.lights.push_back({
-    {0.0f, 10.0f, 0.0f}, // Position
-    {1.0f, 1.0f, 1.0f}, // Color
-    1.0f // Intensity
-  });
-
   while (Core::running) {
     if (glfwWindowShouldClose(Core::window)) {
       Core::running = false;
     }
-    if (glfwGetKey(Core::window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+    if (i::KeyPressed(GLFW_KEY_ESCAPE)) {
       Core::running = false;
     }
-    if (glfwGetKey(Core::window, GLFW_KEY_D) == GLFW_PRESS) {
+    if (i::KeyPressed(GLFW_KEY_D)) {
       Core::world.player.transform.position.x += 0.1f;
     }
-    if (glfwGetKey(Core::window, GLFW_KEY_A) == GLFW_PRESS) {
+    if (i::KeyPressed(GLFW_KEY_A)) {
       Core::world.player.transform.position.x -= 0.1f;
     }
-    if (glfwGetKey(Core::window, GLFW_KEY_W) == GLFW_PRESS) {
+    if (i::KeyPressed(GLFW_KEY_W)) {
       Core::world.player.transform.position.y += 0.1f;
     }
-    if (glfwGetKey(Core::window, GLFW_KEY_S) == GLFW_PRESS) {
+    if (i::KeyPressed(GLFW_KEY_S)) {
       Core::world.player.transform.position.y -= 0.1f;
     }
     Core::world.camera.transform.position = Core::world.player.transform.position;
@@ -51,7 +45,7 @@ int main() {
     r::AddRenderable(Core::world.player.texture, Core::world.player.transform);
     r::Render();
     r::EndFrame();
-    glfwPollEvents(); // Replace with i::
+    i::PollEvents();
   }
   r::Quit();
   return 0;
