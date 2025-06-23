@@ -1,0 +1,13 @@
+{
+  "dependencies": [
+    "box2d",
+    "fmt",
+    "freetype",
+    "glad",
+    "glfw3",
+    "glm",
+    "opengl",
+    "pugixml",
+    "stb"
+  ]
+}
