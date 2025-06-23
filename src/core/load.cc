@@ -26,18 +26,42 @@ World LoadWorld(const char* filename) {
     return world;
   }
   for (pugi::xml_node npc_node : world_node.children("npc")) {
-    world.npcs.push_back(LoadNPC(npc_node.value()));
+    world.npcs.push_back(LoadNPC(npc_node.child_value()));
   }
   for (pugi::xml_node decoration_node : world_node.children("decoration")) {
-    world.decorations.push_back(LoadDecoration(decoration_node.value()));
+    world.decorations.push_back(LoadDecoration(decoration_node.child_value()));
   }
   pugi::xml_node player_node = world_node.child("player");
   if (player_node) {
-    world.player = LoadPlayer(player_node.value());
+    world.player = LoadPlayer(player_node.child_value());
   } else {
     fprintf(stderr, "No <player> node found in file '%s'\n", filename);
   }
+  pugi::xml_node camera_node = world_node.child("camera");
+  if (camera_node) {
+    world.camera = LoadCamera(camera_node.child_value());
+  } else {
+    fprintf(stderr, "No <camera> node found in file '%s'\n", filename);
+  }
   return world;
+}
+
+Camera LoadCamera(const char* filename) {
+  Camera camera;
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file(filename);
+  if (!result) {
+    fprintf(stderr, "Failed to load camera file '%s': %s\n", filename, result.description());
+    return camera;
+  }
+  pugi::xml_node camera_node = doc.child("camera");
+  if (!camera_node) {
+    fprintf(stderr, "No <camera> node found in file '%s'\n", filename);
+    return camera;
+  }
+  camera.transform = LoadTransform(camera_node.child("transform"));
+  camera.zoom = camera_node.attribute("zoom").as_float();
+  return camera;
 }
 
 NPC LoadNPC(const char* filename) {

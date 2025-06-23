@@ -16,6 +16,13 @@ int main() {
       Core::running = false;
     }
     r::BeginFrame();
+    for (auto& npc : Core::world.npcs) {
+      r::AddRenderable(npc.texture, npc.transform);
+    }
+    for (auto& decoration : Core::world.decorations) {
+      r::AddRenderable(decoration.texture, decoration.transform);
+    }
+    r::AddRenderable(Core::world.player.texture, Core::world.player.transform);
     r::RenderGBuffer();
     r::RenderLighting();
     r::EndFrame();

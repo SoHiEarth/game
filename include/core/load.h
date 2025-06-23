@@ -8,6 +8,7 @@
 #include "core/render/light.h"
 
 World LoadWorld(const char* filename);
+Camera LoadCamera(const char* filename);
 Player LoadPlayer(const char* filename);
 NPC LoadNPC(const char* filename);
 Decoration LoadDecoration(const char* filename);
