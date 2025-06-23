@@ -6,6 +6,7 @@ Transform LoadTransform(const pugi::xml_node& node) {
   Transform transform;
   transform.position.x = node.attribute("x").as_float();
   transform.position.y = node.attribute("y").as_float();
+  transform.position.z = node.attribute("z").as_float();
   transform.scale.x = node.attribute("scale_x").as_float();
   transform.scale.y = node.attribute("scale_y").as_float();
   transform.rotation = node.attribute("rotation").as_float();
@@ -60,7 +61,6 @@ Camera LoadCamera(const char* filename) {
     return camera;
   }
   camera.transform = LoadTransform(camera_node.child("transform"));
-  camera.zoom = camera_node.attribute("zoom").as_float();
   return camera;
 }
 

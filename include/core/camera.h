@@ -3,17 +3,22 @@
 
 #include "core/transform.h"
 
+namespace Core {
+  extern int window_width;
+  extern int window_height;
+}
+
 struct Camera {
   Transform transform;
-  float zoom = 1.0f;
-  float aspect_ratio = 1.0f;
-  glm::mat4 GetViewMatrix() const {
-    return glm::translate(glm::mat4(1.0f), glm::vec3(-transform.position));
-  }
+  glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f);
+  glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
   glm::mat4 GetProjectionMatrix() const {
-    float height = 10.0f / zoom;
-    float width = height * aspect_ratio;
-    return glm::ortho(-width / 2.0f, width / 2.0f, -height / 2.0f, height / 2.0f, 0.1f, 100.0f);
+    return glm::perspective(glm::radians(45.0f), static_cast<float>(Core::window_width) / Core::window_height, 0.1f, 100.0f);
+  }
+  glm::mat4 GetViewMatrix() const {
+    glm::vec3 camera_position = transform.position,
+      camera_target = camera_position + forward;
+    return glm::lookAt(camera_position, camera_target, up);
   }
 };
 
