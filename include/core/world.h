@@ -15,6 +15,7 @@ struct World {
   std::vector<Light> lights;
   Player player;
   Camera camera;
+  b2Vec2 gravity;
   b2WorldId physics_world;
   int ground_height;
   b2BodyId ground_body;

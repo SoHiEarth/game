@@ -7,11 +7,13 @@
 #include "core/decoration.h"
 #include "core/render/light.h"
 
-World LoadWorld(const char* filename);
-Camera LoadCamera(const char* filename);
-Player LoadPlayer(const char* filename);
-NPC LoadNPC(const char* filename);
-Decoration LoadDecoration(const char* filename);
-Light LoadLight(const char* filename);
+namespace l {
+  World LoadWorld(const char* filename);
+  Camera LoadCamera(const char* filename, World& world);
+  Player LoadPlayer(const char* filename, World& world);
+  NPC LoadNPC(const char* filename, World& world);
+  Decoration LoadDecoration(const char* filename, World& world);
+  Light LoadLight(const char* filename, World& world);
+}
 
 #endif
