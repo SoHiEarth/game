@@ -35,6 +35,7 @@ void r::Init() {
   const GLFWvidmode* mode = glfwGetVideoMode(primaryMonitor);
   Core::window_width = mode->width;
   Core::window_height = mode->height;
+  Core::target_framerate = mode->refreshRate;
   Core::window = glfwCreateWindow(Core::window_width, Core::window_height, "Game", glfwGetPrimaryMonitor(), nullptr);
   glfwSetFramebufferSizeCallback(Core::window, WindowResizeCB);
   glfwMakeContextCurrent(Core::window);
@@ -48,6 +49,8 @@ void r::Init() {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // Disable VSync
+  glfwSwapInterval(0);
 
   float vertices[] = {
     // positions        // texture coords
@@ -145,10 +148,9 @@ void r::AddRenderable(const unsigned int id, const Transform& transform) {
 void r::Render() {
   glUseProgram(texture_shader);
   glBindVertexArray(texture_vao);
-  
   for (const auto& renderable : renderables) {
-    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, renderable.texture_id);
+    glActiveTexture(GL_TEXTURE0);
     glUniform1i(glGetUniformLocation(texture_shader, "tex"), 0);
     glm::mat4 model = renderable.transform.GetModelMatrix();
     glm::mat4 view = Core::world.camera.GetViewMatrix();

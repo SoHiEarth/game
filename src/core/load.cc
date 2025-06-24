@@ -15,6 +15,22 @@ Transform LoadTransform(const pugi::xml_node& node) {
   return transform;
 }
 
+std::vector<unsigned int> LoadTextures(const pugi::xml_node& node) {
+  std::vector<unsigned int> textures;
+  for (pugi::xml_node texture_node : node.children("texture")) {
+    const char* texture_file = texture_node.child_value();
+    if (texture_file && *texture_file) {
+      unsigned int texture_id = r::LoadTexture(texture_file);
+      if (texture_id != 0) {
+        textures.push_back(texture_id);
+      } else {
+        fprintf(stderr, "Failed to load texture '%s'\n", texture_file);
+      }
+    }
+  }
+  return textures;
+}
+
 World l::LoadWorld(const char* filename) {
   World world;
   pugi::xml_document doc;
@@ -97,7 +113,7 @@ NPC l::LoadNPC(const char* filename, World& world) {
   }
   npc.name = npc_node.attribute("name").as_string();
   npc.transform = LoadTransform(npc_node.child("transform"));
-  npc.texture = r::LoadTexture(npc_node.attribute("texture").as_string());
+  npc.textures = LoadTextures(npc_node.child("animation"));
   return npc;
 }
 
@@ -115,7 +131,7 @@ Decoration l::LoadDecoration(const char* filename, World& world) {
     return decoration;
   }
   decoration.transform = LoadTransform(decoration_node.child("transform"));
-  decoration.texture = r::LoadTexture(decoration_node.attribute("texture").as_string());
+  decoration.textures = LoadTextures(decoration_node.child("animation"));
   return decoration;
 }
 

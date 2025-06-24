@@ -7,3 +7,4 @@ int Core::window_width = 800,
     Core::window_height = 600;
 bool Core::running = true;
 World Core::world;
+int Core::target_framerate = 60;

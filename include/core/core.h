@@ -10,6 +10,7 @@ namespace Core {
          window_height;
   extern bool running;
   extern World world;
+  extern int target_framerate;
 }
 
 #endif
