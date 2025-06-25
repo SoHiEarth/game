@@ -19,6 +19,10 @@ struct World {
   b2WorldId physics_world;
   int ground_height;
   b2BodyId ground_body;
+  void Start();
+  void Update();
+  void Render();
+  void Quit();
 };
 
 #endif
