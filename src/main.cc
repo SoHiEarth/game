@@ -30,7 +30,7 @@ int main() {
       p::ApplyImpulse(Core::world.player.physics_body, glm::vec2(-0.1f, 0.0f));
     }
     if (i::KeyPressed(GLFW_KEY_SPACE)) {
-      p::ApplyImpulse(Core::world.player.physics_body, glm::vec2(0.0f, 0.2f));
+      p::ApplyImpulse(Core::world.player.physics_body, glm::vec2(0.0f, 0.1f));
     }
 
     glm::vec2 player_pos = p::GetPosition(Core::world.player.physics_body);
@@ -63,6 +63,7 @@ int main() {
     if (frame_duration < target_frame_duration) {
       std::this_thread::sleep_for(target_frame_duration - frame_duration);
     }
+    fmt::print("Frame Duration: {} ms | FPS: {:.2f}\n", frame_duration.count(), 1000.0f / frame_duration.count());
   }
   r::Quit();
   return 0;
